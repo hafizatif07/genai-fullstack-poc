@@ -38,12 +38,12 @@ A web application that generates personalized career advice using Google's Gener
    pip install -r requirements.txt
    ```
 
-4. **Run Flask Backend** (Terminal 1)
+4. **Run Flask Backend** (Terminal 1 - move to the directory final-code before running the commands)
    ```powershell
-   python app.py
+   python app_simple.py
    ```
 
-5. **Run HTML Server** (Terminal 2)
+5. **Run HTML Server** (Terminal 2 - move to the directory final-code before running the commands)
    ```powershell
    python -m http.server 3000
    ```
