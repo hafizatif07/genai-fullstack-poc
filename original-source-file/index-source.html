@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>Page Title – what you see in the tab</title>
+</head>
+
+<body>
+    <h1>Heading 1 – the biggest, boldest heading</h1>
+    <p>My first paragraph. – normal text content</p>
+
+    <form>
+
+        <label for="name">Full name:</label>
+        <input type="text" id="name" name="name"><br>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email"><br>
+
+
+        <p>Choose the situation that most accurately describes your situation:</p>
+        <input type="radio" id="student" name="category" value="student">
+        <label for="student">Student</label><br>
+        <input type="radio" id="gradutate" name="category" value="gradutate">
+        <label for="gradutate">Gradutate</label><br>
+        <input type="radio" id="career-changer" name="category" value="career-changer">
+        <label for="career-changer">Career Changer</label><br>
+
+        <p>Select all that apply to you:</p>
+        <input type="checkbox" id="gcses" name="gcses" value="gcses">
+        <label for="gcses"> I have completed GCSEs in Maths and English</label><br>
+        <input type="checkbox" id="alevel" name="alevel" value="alevel">
+        <label for="alevel"> I have completed A Levels or BTEC equivalents</label><br>
+        <input type="checkbox" id="uni" name="uni" value="uni">
+        <label for="uni"> I have completed an undergraduate degree</label><br>
+        <input type="checkbox" id="postgrad" name="postgrad" value="postgrad">
+        <label for="postgrad"> I have completed a postgraguate degree</label><br><br>
+
+        <label for="purpose">What is your primary objective:</label>
+        <select id="purpose" name="purpose">
+            <option value="wex">Finding work experience</option>
+            <option value="app">Finding apprenticeships</option>
+            <option value="grad">Finding graduate roles</option>
+            <option value="jobs">Finding entry-level jobs</option>
+            <option value="advice">Recieving general career advice</option>
+        </select><br><br>
+
+        <!-- <input type="submit" value="Submit"> -->
+        <button type="button" onclick="composePrompt()">Create Prompt</button>
+
+    </form>
+
+    <script>
+
+        function composePrompt() {
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const situation = document.querySelector('input[name="category"]:checked').value;
+            const studies = document.querySelectorAll('input[type="checkbox"]:checked');
+            const goal = document.getElementById('purpose').value;
+
+            let allStudies = [];
+
+            studies.forEach(studyitem => {
+                allStudies.push(studyitem.value);
+            });
+
+            console.log(`name: ${name}`);
+            console.log(`name: ${email}`);
+            console.log(`name: ${situation}`);
+            console.log(`name: ${allStudies}`);
+            console.log(`name: ${goal}`);
+
+        }
+
+
+    </script>
+
+</body>
+
+
+</html>

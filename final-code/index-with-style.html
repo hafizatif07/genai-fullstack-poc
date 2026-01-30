@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>AI Career Advice Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #333;
+            border-bottom: 3px solid #007bff;
+            padding-bottom: 10px;
+        }
+        
+        form {
+            margin: 20px 0;
+        }
+        
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+            color: #555;
+        }
+        
+        input[type="text"],
+        input[type="email"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0 15px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        
+        input[type="radio"],
+        input[type="checkbox"] {
+            margin-right: 8px;
+        }
+        
+        .option-group {
+            margin: 15px 0;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+        
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        
+        button:hover {
+            background-color: #0056b3;
+        }
+        
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .loading {
+            color: #007bff;
+            font-style: italic;
+            margin: 20px 0;
+            display: none;
+        }
+        
+        .response-container {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #e8f4f8;
+            border-left: 4px solid #007bff;
+            border-radius: 4px;
+            display: none;
+        }
+        
+        .response-container.show {
+            display: block;
+        }
+        
+        .response-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #007bff;
+            margin-bottom: 15px;
+        }
+        
+        .response-text {
+            color: #333;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+        
+        .error-container {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8d7da;
+            border-left: 4px solid #dc3545;
+            border-radius: 4px;
+            color: #721c24;
+            display: none;
+        }
+        
+        .error-container.show {
+            display: block;
+        }
+        
+        .token-usage {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #e0e0e0;
+            border-radius: 4px;
+            font-size: 13px;
+            color: #555;
+        }
+        
+        .token-info {
+            display: inline-block;
+            margin-right: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>AI Career Advice Generator</h1>
+        <p>Fill out the form below to receive personalized career guidance from our AI assistant.</p>
+
+        <form id="careerForm">
+
+            <!-- INTEGRATION POINT 1: User Personal Information
+                 This section collects basic user details that will be sent to the API
+                 The values are captured using JavaScript and converted to JSON format -->
+            <label for="name">Full name:</label>
+            <input type="text" id="name" name="name" required><br>
+            
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required><br>
+
+            <!-- INTEGRATION POINT 2: User Situation Category
+                 The selected radio button value is captured and sent to the API
+                 This helps the AI tailor advice for students, graduates, or career changers -->
+            <div class="option-group">
+                <p><strong>Choose the situation that most accurately describes your situation:</strong></p>
+                <input type="radio" id="student" name="category" value="student" required>
+                <label for="student" style="display: inline; margin-top: 0;">Student</label><br>
+                <input type="radio" id="gradutate" name="category" value="gradutate">
+                <label for="gradutate" style="display: inline; margin-top: 0;">Graduate</label><br>
+                <input type="radio" id="career-changer" name="category" value="career-changer">
+                <label for="career-changer" style="display: inline; margin-top: 0;">Career Changer</label><br>
+            </div>
+
+            <!-- INTEGRATION POINT 3: Education Checkboxes
+                 Multiple selections are collected into an array
+                 These values show the user's educational background to the AI -->
+            <div class="option-group">
+                <p><strong>Select all that apply to you:</strong></p>
+                <input type="checkbox" id="gcses" name="gcses" value="GCSEs in Maths and English">
+                <label for="gcses" style="display: inline; margin-top: 0;"> I have completed GCSEs in Maths and English</label><br>
+                <input type="checkbox" id="alevel" name="alevel" value="A Levels or BTEC equivalents">
+                <label for="alevel" style="display: inline; margin-top: 0;"> I have completed A Levels or BTEC equivalents</label><br>
+                <input type="checkbox" id="uni" name="uni" value="Undergraduate degree">
+                <label for="uni" style="display: inline; margin-top: 0;"> I have completed an undergraduate degree</label><br>
+                <input type="checkbox" id="postgrad" name="postgrad" value="Postgraduate degree">
+                <label for="postgrad" style="display: inline; margin-top: 0;"> I have completed a postgraduate degree</label><br>
+            </div>
+
+            <!-- INTEGRATION POINT 4: Career Goal Selection
+                 The selected option value is sent to help the AI understand the user's goal -->
+            <label for="purpose">What is your primary objective:</label>
+            <select id="purpose" name="purpose" required>
+                <option value="">-- Select an option --</option>
+                <option value="work experience">Finding work experience</option>
+                <option value="apprenticeships">Finding apprenticeships</option>
+                <option value="graduate roles">Finding graduate roles</option>
+                <option value="entry-level jobs">Finding entry-level jobs</option>
+                <option value="career advice">Receiving general career advice</option>
+            </select><br><br>
+
+            <!-- INTEGRATION POINT 5: Submit Button
+                 When clicked, the composePrompt() function is triggered
+                 This function collects all form data and sends it to the Python backend -->
+            <button type="button" onclick="composePrompt()" id="submitBtn">Generate Career Advice</button>
+
+        </form>
+
+        <!-- INTEGRATION POINT 6: Response Display Area
+             This section is initially hidden and will show the AI's response
+             When the API returns data, this container is populated with the response text
+             The display style changes from 'display: none' to 'display: block' via JavaScript -->
+        <div class="loading" id="loadingIndicator">
+            Loading... Please wait while we generate your personalized career advice.
+        </div>
+
+        <div class="error-container" id="errorContainer">
+            <strong>Error:</strong> <span id="errorMessage"></span>
+        </div>
+
+        <div class="response-container" id="responseContainer">
+            <div class="response-title">Your Personalized AI Career Advice</div>
+            <!-- INTEGRATION POINT 7: AI Response Text
+                 This div element is populated with the response from the API
+                 The text appears here after the backend processes the form and calls the API -->
+            <div class="response-text" id="responseText"></div>
+            <div class="token-usage" id="tokenUsage"></div>
+        </div>
+
+    </div>
+
+    <script>
+
+        /**
+         * WHAT THIS JAVASCRIPT CODE DOES:
+         * 
+         * When the user clicks "Generate Career Advice":
+         * 1. This function collects all form data (name, email, education, goal, etc.)
+         * 2. Converts the data into JSON format
+         * 3. Sends it to the Python backend (Flask server) running on http://localhost:5000
+         * 4. Waits for the API response from the backend
+         * 5. Displays the response on the HTML page
+         * 
+         * This is the MAIN INTEGRATION POINT between the HTML page and the Python backend.
+         */
+        
+        async function composePrompt() {
+            
+            try {
+                // Disable button while processing
+                const submitBtn = document.getElementById('submitBtn');
+                submitBtn.disabled = true;
+                
+                // Show loading indicator
+                document.getElementById('loadingIndicator').style.display = 'block';
+                document.getElementById('responseContainer').classList.remove('show');
+                document.getElementById('errorContainer').classList.remove('show');
+                
+                // STEP 1: Collect form data
+                // This section extracts all the user input from the HTML form elements
+                // and stores them in variables
+                
+                const name = document.getElementById('name').value.trim();
+                const email = document.getElementById('email').value.trim();
+                
+                // Get the selected radio button value
+                const situation = document.querySelector('input[name="category"]:checked');
+                
+                // Validate required fields
+                if (!name || !email || !situation) {
+                    throw new Error('Please fill in all required fields (Name, Email, and Situation)');
+                }
+                
+                // Get all checked checkboxes for education
+                const studiesCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+                const studies = [];
+                studiesCheckboxes.forEach(checkbox => {
+                    studies.push(checkbox.value);
+                });
+                
+                // Get the selected option from the dropdown
+                const goal = document.getElementById('purpose').value;
+                
+                if (!goal) {
+                    throw new Error('Please select your primary objective');
+                }
+                
+                // STEP 2: Create JSON object
+                // This is the format that the Python backend expects
+                const formData = {
+                    name: name,
+                    email: email,
+                    situation: situation.value,
+                    studies: studies,
+                    goal: goal
+                };
+                
+                // Log to console for debugging
+                console.log('Sending form data to backend:', formData);
+                
+                // STEP 3: Send data to Python backend
+                // This is a POST request that sends the form data as JSON
+                // The backend is listening on http://localhost:5000/generate-prompt
+                // Make sure Flask server is running before clicking the button!
+                
+                const response = await fetch('http://localhost:5000/generate-prompt', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                // STEP 4: Handle the response from the backend
+                const result = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(result.error || 'Failed to generate advice');
+                }
+                
+                // Hide loading indicator
+                document.getElementById('loadingIndicator').style.display = 'none';
+                
+                // STEP 5: Display the AI response on the page
+                // The 'result.response' contains the text from the API
+                // We insert it into the responseText div element
+                
+                const responseText = document.getElementById('responseText');
+                responseText.textContent = result.response;
+                
+                // Display token usage information if available
+                if (result.token_usage) {
+                    const tokenUsage = document.getElementById('tokenUsage');
+                    tokenUsage.innerHTML = `
+                        <strong>API Usage:</strong>
+                        <span class="token-info">📤 Input Tokens: ${result.token_usage.input_tokens}</span>
+                        <span class="token-info">📥 Output Tokens: ${result.token_usage.output_tokens}</span>
+                        <span class="token-info">📊 Total Tokens: ${result.token_usage.total_tokens}</span>
+                    `;
+                }
+                
+                // Show the response container
+                document.getElementById('responseContainer').classList.add('show');
+                
+                console.log('Successfully received AI response');
+                
+            } catch (error) {
+                // STEP 6: Error handling
+                // If anything goes wrong (network error, API error, validation error, etc.)
+                // we display a user-friendly error message
+                
+                console.error('Error:', error);
+                
+                // Hide loading indicator
+                document.getElementById('loadingIndicator').style.display = 'none';
+                
+                // Show error message
+                const errorContainer = document.getElementById('errorContainer');
+                const errorMessage = document.getElementById('errorMessage');
+                errorMessage.textContent = error.message;
+                errorContainer.classList.add('show');
+                
+            } finally {
+                // Re-enable button
+                const submitBtn = document.getElementById('submitBtn');
+                submitBtn.disabled = false;
+            }
+        }
+
+    </script>
+
+</body>
+
+
+</html>
