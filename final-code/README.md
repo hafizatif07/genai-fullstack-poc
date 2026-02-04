@@ -7,7 +7,7 @@ A web application that generates personalized career advice using Google's Gener
 1. **Collects user information** through an HTML form (name, email, education, career goals)
 2. **Sends data to Flask backend** running on Python
 3. **Calls Google's Gemini API** to generate personalized career advice
-4. **Displays results** with token usage information
+4. **Displays results** 
 
 ---
 
@@ -68,3 +68,4 @@ A web application that generates personalized career advice using Google's Gener
 - ✅ Clean, documented code
 
 ---
+
